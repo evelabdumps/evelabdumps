@@ -1,0 +1,14 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h2>Request Consultancy Service</h2>
+<form method="POST" class="mt-3" style="max-width:700px;">
+  {% csrf_token %}
+  <div class="mb-3">
+    {{ form.topic.label_tag }} {{ form.topic }}
+  </div>
+  <div class="mb-3">
+    {{ form.description.label_tag }} {{ form.description }}
+  </div>
+  <button type="submit" class="btn btn-primary">Proceed to Payment (₹7000)</button>
+</form>
+{% endblock %}

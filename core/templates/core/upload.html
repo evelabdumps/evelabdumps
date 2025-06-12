@@ -1,0 +1,12 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h2>Upload EVE-Ng Lab File</h2>
+<form method="POST" enctype="multipart/form-data" class="mt-3" style="max-width:600px;">
+  {% csrf_token %}
+  <div class="mb-3">
+    {{ form.file.label_tag }}<br>
+    {{ form.file }}
+  </div>
+  <button type="submit" class="btn btn-success">Upload</button>
+</form>
+{% endblock %}

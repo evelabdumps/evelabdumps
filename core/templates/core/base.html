@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100" data-bs-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EVE-Ng Lab & Consultancy Platform</title>
+  <!-- Bootstrap CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" rel="stylesheet">
+  
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    main {
+      flex: 1 0 auto;
+    }
+  </style>
+</head>
+
+
+
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="{% url 'home' %}">EVE-Ng Labs</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+
+        {% if user.is_authenticated %}
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item"><a class="nav-link" href="{% url 'submit_issue' %}">Submit Issue</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'consultancy_request' %}">Consultancy</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'labs_view' %}">Labs</a>
+          </li>
+  
+          {% if user.is_superuser %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'upload_lab' %}">Upload Lab</a>
+          </li>
+          {% endif %}
+        </ul>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        
+            
+          </ul>
+        <span class="navbar-text me-3">
+          Welcome, {{ user.username }}!
+        </span>
+        
+
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+        
+        {% else %}
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+        </ul>
+        {% endif %}
+
+      </div>
+    </div>
+  </nav>
+  <main class="container my-5">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="bg-primary text-center text-light px-3 py-3 mt-auto">
+    &copy; {{ now|date:"Y" }} EVE-Ng Lab & Consultancy
+  </footer>
+
+  <!-- Bootstrap Bundle JS with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

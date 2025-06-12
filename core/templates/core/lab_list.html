@@ -1,0 +1,14 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h2>My Uploaded Labs</h2>
+<div class="list-group mt-3" style="max-width:700px;">
+  {% for lab in labs %}
+  <a href="{{ lab.file.url }}" target="_blank" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+    {{ lab.file.name }}
+    <small class="text-muted">{{ lab.uploaded_at|date:"M d, Y H:i" }}</small>
+  </a>
+  {% empty %}
+  <p class="text-muted">You have not uploaded any labs yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}

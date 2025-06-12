@@ -1,0 +1,67 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h2>Consultancy Payment</h2>
+<p class="lead">Please pay <strong>₹7000</strong> to proceed with your consultancy request on <em>{{ consultancy.topic }}</em>.</p>
+<form id="payment-form">
+  <script src="https://checkout.razorpay.com/v1/checkout.js"
+          data-key="{{ razorpay_key }}"
+          data-amount="{{ amount }}"
+          data-currency="INR"
+          data-order_id="{{ order_id }}"
+          data-buttontext="Pay Now"
+          data-name="EVE-Ng Consultancy"
+          data-description="{{ consultancy.topic }}"
+          data-prefill.name="{{ request.user.get_full_name|default:request.user.username }}"
+          data-prefill.email="{{ request.user.email }}"
+          data-theme.color="#0d6efd">
+  </script>
+  <input type="hidden" id="consultancy_id" value="{{ consultancy.id }}">
+</form>
+
+<script>
+  window.onload = function() {
+    var options = {
+      "key": "{{ razorpay_key }}",
+      "amount": "{{ amount }}",
+      "currency": "INR",
+      "name": "EVE-Ng Consultancy",
+      "description": "{{ consultancy.topic }}",
+      "order_id": "{{ order_id }}",
+      "handler": function(response) {
+        // AJAX POST Payment Verification
+        fetch("{% url 'razorpay_payment_verify' %}", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRFToken": "{{ csrf_token }}"
+          },
+          body: new URLSearchParams({
+            'razorpay_payment_id': response.razorpay_payment_id,
+            'razorpay_order_id': response.razorpay_order_id,
+            'razorpay_signature': response.razorpay_signature,
+            'consultancy_id': document.getElementById('consultancy_id').value
+          })
+        }).then(res => res.json())
+          .then(data => {
+            alert(data.status);
+            window.location.href = "{% url 'home' %}";
+          }).catch(() => {
+            alert('Payment verification failed.');
+          });
+      },
+      "prefill": {
+        "name": "{{ request.user.get_full_name|default:request.user.username }}",
+        "email": "{{ request.user.email }}"
+      },
+      "theme": {
+        "color": "#0d6efd"
+      }
+    };
+    var rzp = new Razorpay(options);
+    rzp.open();
+
+    // Disable the button default (hidden by Razorpay automatically)
+    document.querySelector('.razorpay-payment-button').style.display = 'none';
+  };
+</script>
+{% endblock %}

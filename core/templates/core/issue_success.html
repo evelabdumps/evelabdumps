@@ -1,0 +1,8 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="alert alert-success text-center">
+  <h4 class="alert-heading">Issue Submitted Successfully!</h4>
+  <p>Our network experts will review your submission and get back to you shortly.</p>
+  <a href="{% url 'submit_issue' %}" class="btn btn-outline-primary mt-3">Submit Another Issue</a>
+</div>
+{% endblock %}

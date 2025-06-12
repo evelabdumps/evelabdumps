@@ -1,0 +1,12 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 60vh;">
+  <div class="text-center">
+    <i class="bi bi-exclamation-triangle-fill display-1 text-warning mb-3"></i>
+    <h2 class="mb-3">Permission Denied</h2>
+    <p class="lead mb-4">You do not have permission to access this page or perform this action.</p>
+    <a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
+  </div>
+</div>
+{% endblock %}

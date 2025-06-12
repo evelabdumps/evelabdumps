@@ -1,0 +1,18 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h2>Submit Network Issue</h2>
+<form method="POST" class="mt-3" style="max-width:700px;">
+  {% csrf_token %}
+  <div class="mb-3">
+    {{ form.title.label_tag }} {{ form.title }}
+  </div>
+  <div class="mb-3">
+    {{ form.description.label_tag }} {{ form.description }}
+  </div>
+  <div class="mb-3">
+    {{ form.lab_file.label_tag }} {{ form.lab_file }}
+    <div class="form-text">Select the related lab file (optional)</div>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit Issue</button>
+</form>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="container" style="max-width: 500px;">
+  <h2 class="mb-4">Upload Lab File</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Upload</button>
+    <a href="{% url 'labs_view' %}" class="btn btn-secondary ms-2">Back to Labs</a>
+  </form>
+</div>
+{% endblock %}
