@@ -1,14 +1,24 @@
 {% extends 'core/base.html' %}
+
 {% block content %}
-<h2>Request Consultancy Service</h2>
-<form method="POST" class="mt-3" style="max-width:700px;">
-  {% csrf_token %}
-  <div class="mb-3">
-    {{ form.topic.label_tag }} {{ form.topic }}
+<div class="container my-5">
+  <div class="card shadow" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 15px; padding: 20px; max-width: 800px; margin: 0 auto;">
+    <h2 class="text-center mb-4">Request Consultancy Service</h2>
+    <p class="text-center">Fill out the form below to request expert consultancy on networking-related topics.</p>
+    <form method="POST" class="mt-3">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="id_topic" class="form-label"><strong>{{ form.topic.label }}</strong></label>
+        {{ form.topic }}
+      </div>
+      <div class="mb-3">
+        <label for="id_description" class="form-label"><strong>{{ form.description.label }}</strong></label>
+        {{ form.description }}
+      </div>
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary w-100">Proceed to Payment (₹7000)</button>
+      </div>
+    </form>
   </div>
-  <div class="mb-3">
-    {{ form.description.label_tag }} {{ form.description }}
-  </div>
-  <button type="submit" class="btn btn-primary">Proceed to Payment (₹7000)</button>
-</form>
+</div>
 {% endblock %}

@@ -1,13 +1,32 @@
 {% extends 'core/base.html' %}
 {% block content %}
-<h2 class="mb-4">User Login</h2>
-<form method="post" class="mx-auto" style="max-width: 400px;">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit" class="btn btn-primary w-100">Log In</button>
-</form>
+<div class="container my-5">
+  <div class="card shadow" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 15px; padding: 20px; max-width: 800px; margin: 0 auto;">
+    <h2 class="mb-4" style="text-align: center;">Welcome to Lab Dumps & Network Consultancy</h2>
+    <form method="post" class="mx-auto" style="max-width: 400px;">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary w-100">Log In</button>
+    </form>
 
-<p class="mt-3 text-center">
-  Don't have an account? <a href="{% url 'register' %}">Register here</a>.
-</p>
+    <p class="mt-3 text-center">
+      Don't have an account? <a href="{% url 'register' %}">Register here</a>.
+    </p>
+
+    <p class="mt-4" style="text-align: center;">
+      Your one-stop portal for networking enthusiasts, professionals, and learners!  
+      At <strong>EVE Lab Dumps</strong>, we are dedicated to empowering you with the resources and guidance you need to excel in the dynamic field of networking.
+    </p>
+
+    <ul class="list-unstyled mt-3">
+      <li>🌟 <strong>Pre-Built Labs:</strong> Access ready-to-use labs for platforms like EVE-NG, Cisco CML, and Packet Tracer.</li>
+      <li>🌟 <strong>Custom Lab Images & Packs:</strong> Build your own labs with our custom images and lab packs.</li>
+      <li>🌟 <strong>Consultancy Services:</strong> Get expert guidance on network design and troubleshooting.</li>
+      <li>🌟 <strong>Lab Suggestions:</strong> Suggest new labs, and we'll bring your ideas to life.</li>
+      <li>🌟 <strong>Hands-On Practice:</strong> Enhance your skills with real-world lab scenarios.</li>
+    </ul>
+
+    <p class="mt-4" style="text-align: center;">Join our community and take your networking skills to the next level!</p>
+  </div>
+</div>
 {% endblock %}

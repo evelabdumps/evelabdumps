@@ -1,11 +1,13 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-<div class="d-flex justify-content-center align-items-center" style="min-height: 60vh;">
-  <div class="text-center">
-    <i class="bi bi-exclamation-triangle-fill display-1 text-warning mb-3"></i>
-    <h2 class="mb-3">Permission Denied</h2>
-    <p class="lead mb-4">You do not have permission to access this page or perform this action.</p>
+<div class="container my-5">
+  <div class="card shadow-lg text-center py-5 px-4" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 15px;">
+    <i class="bi bi-exclamation-triangle-fill display-1 text-warning mb-4"></i>
+    <h2 class="text-danger mb-3">Permission Denied</h2>
+    <p class="lead mb-4 text-muted">
+      You do not have permission to access this page or perform this action.
+    </p>
     <a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
   </div>
 </div>
