@@ -16,6 +16,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Static & Media files config
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
@@ -23,8 +24,8 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Razorpay API keys - replace these with your keys
-RAZORPAY_KEY_ID = 'rzp_test_your_key_here'
-RAZORPAY_KEY_SECRET = 'your_secret_here'
+RAZORPAY_KEY_ID = 'rzp_test_hJxV5AzcgNKCSA'
+RAZORPAY_KEY_SECRET = 'oZhi4k9AMakNvRhAKZzFpKL1'
 
 # Authentication redirects
 LOGIN_URL = '/accounts/login/'
@@ -52,9 +53,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-!q6y*ou(8)!u9=!h^5+!=o*d1(y4&ul(m#ngyk0lun&tq+a+&='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['65.0.225.130','www.evelabdumps.in','www.evelabdumps.online','www.evelabdumps.com','evelabdumps.in','evelabdumps.online','evelabdumps.com']
 
 
 # Application definition
