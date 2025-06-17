@@ -10,12 +10,13 @@ from django.shortcuts import render, redirect
 from .forms import EveLabFileForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
+from .forms import EveLabFileForm, NetworkIssueForm, ConsultancyRequestForm, LabImageForm
+from .models import EveLabFile, NetworkIssue, ConsultancyRequest, LabImage
 
 
 
-
-from .forms import EveLabFileForm, NetworkIssueForm, ConsultancyRequestForm
-from .models import EveLabFile, NetworkIssue, ConsultancyRequest
+def landing(request):
+    return render(request, 'core/landing.html')
 
 razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
 
@@ -24,6 +25,20 @@ from django.contrib.auth.models import User
 def admin_required(view_func):
     decorated_view_func = login_required(user_passes_test(lambda u: u.is_superuser)(view_func))
     return decorated_view_func
+
+
+@admin_required
+def upload_lab_image(request):
+    if request.method == 'POST':
+        form = LabImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            lab_image = form.save(commit=False)
+            lab_image.user = request.user
+            lab_image.save()
+            return redirect('home')
+    else:
+        form = LabImageForm()
+    return render(request, 'core/upload_lab_image.html', {'form': form})
 
 @admin_required
 def upload_lab(request):
@@ -38,11 +53,45 @@ def upload_lab(request):
         form = EveLabFileForm()
     return render(request, 'core/upload_lab.html', {'form': form})
 
+
+def image_gallery(request):
+    if not request.user.is_authenticated:
+        return redirect('login')  # Redirect to login if not authenticated
+
+    # Fetch all images grouped by category
+    image_categories = {}
+    images = LabImage.objects.all()  # Fetch all images
+    for image in images:
+        category = image.category or "Uncategorized"
+        image_categories.setdefault(category, []).append(image)
+        # Check if it's an image and set the property
+        image.is_image = image.file.url.lower().endswith((".jpg", ".jpeg", ".png", ".gif"))
+
+    return render(request, 'core/image_gallery.html', {
+        'image_categories': image_categories,
+    })
+
+
 @login_required
 def home(request):
+    # Fetch labs uploaded by admins
     admins = User.objects.filter(is_superuser=True)
     labs = EveLabFile.objects.filter(user__in=admins).order_by('-uploaded_at')
-    return render(request, 'core/home.html', {'labs': labs})
+
+    # Prepare image categories
+    image_categories = {}
+    categories = LabImage.objects.values_list('category', flat=True).distinct()
+
+    for category in categories:
+        image_categories[category] = LabImage.objects.filter(category=category).order_by('-uploaded_at')
+
+    context = {
+        'labs': labs,
+        'image_categories': image_categories,
+    }
+    return render(request, 'core/home.html', context)
+
+
 
 @login_required
 def upload_lab(request):

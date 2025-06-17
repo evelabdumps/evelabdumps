@@ -2,11 +2,16 @@
 <html lang="en" class="h-100" data-bs-theme="light">
 {% load static %}
 
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lab Dumps & Network Consultancy</title>
-  
+  <title>{% block title %}Lab Dumps & Network Consultancy{% endblock %}</title>
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9183198504165263"
+     crossorigin="anonymous"></script>
+
   <!-- Favicon -->
   <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
   <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
@@ -25,31 +30,34 @@
       background-position: center;
       background-attachment: fixed;
       background-repeat: no-repeat;
-      color: #fff; /* Default text color */
+      color: #fff;
     }
 
     footer {
       margin-top: auto;
-      background-color: rgba(0, 0, 0, 0.8); /* Add a semi-transparent footer background */
+      background-color: rgba(0, 0, 0, 0.8);
       color: #fff;
     }
 
-    /* Specific readability enhancements */
     .card {
       background: rgba(255, 255, 255, 0.9);
-      color: #000; /* Ensure text is readable on a white background */
+      color: #000;
       border-radius: 8px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-brand img {
+      height: 30px;
     }
   </style>
 </head>
 
-
 <body>
+  <!-- Navbar Section -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
     <div class="container">
       <a class="navbar-brand fw-bold d-flex align-items-center" href="{% url 'home' %}">
-        <img src="{% static 'admin/img/logo.png' %}" alt="Logo" class="me-2" style="height: 30px;">
+        <img src="{% static 'admin/img/logo.png' %}" class="me-2">
         Lab Dumps
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -57,31 +65,39 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        {% if user.is_authenticated %}
+        {% block navbar %}
         <ul class="navbar-nav me-auto">
+          {% if user.is_authenticated %}
           <li class="nav-item"><a class="nav-link" href="{% url 'submit_issue' %}">Submit Issue</a></li>
           <li class="nav-item"><a class="nav-link" href="{% url 'consultancy_request' %}">Consultancy</a></li>
           <li class="nav-item"><a class="nav-link" href="{% url 'labs_view' %}">Labs</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'image_gallery' %}">Lab Images</a>
+          </li>
           {% if user.is_superuser %}
           <li class="nav-item"><a class="nav-link" href="{% url 'upload_lab' %}">Upload Lab</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'upload_lab_image' %}">Upload Images</a></li>
+          {% endif %}
+          </ul>
+          <div class="d-flex align-items-center">
+            <span class="navbar-text me-3">Welcome, {{ user.username }}!</span>
+            <form method="post" action="{% url 'logout' %}" class="d-inline">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
+            </form>
+          </div>
+          {% else %}
+          <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+          </ul>
           {% endif %}
         </ul>
-        <div class="d-flex align-items-center">
-          <span class="navbar-text me-3">Welcome, {{ user.username }}!</span>
-          <form method="post" action="{% url 'logout' %}" class="d-inline">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
-          </form>
-        </div>
-        {% else %}
-        <ul class="navbar-nav me-auto">
-          <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-        </ul>
-        {% endif %}
+        {% endblock %}
       </div>
     </div>
   </nav>
 
+  <!-- Main Content Section -->
   <main class="container my-5">
     {% if messages %}
     {% for message in messages %}
@@ -91,13 +107,56 @@
     </div>
     {% endfor %}
     {% endif %}
-    {% block content %}{% endblock %}
+    {% block content %}
+
+    <!-- Admin Upload Section -->
+    {% if user.is_authenticated and user.is_superuser %}
+    <section id="admin-upload">
+      <h2 class="mb-4">Admin: Upload Images</h2>
+      <form method="post" enctype="multipart/form-data" action="{% url 'upload_lab_image' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Upload</button>
+      </form>
+    </section>
+    <hr>
+    {% endif %}
+
+    <!-- User Download Section -->
+    <section id="user-download">
+      <h2 class="mb-4">Available Images for Download</h2>
+      {% if image_categories %}
+      <div class="row">
+        {% for category, images in image_categories.items %}
+        <div class="col-md-6">
+          <h3>{{ category }}</h3>
+          <ul class="list-group mb-3">
+            {% for image in images %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              {{ image.file_name }}
+              <a href="{{ image.file.url }}" download class="btn btn-outline-primary btn-sm">Download</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p>No images available for download.</p>
+      {% endif %}
+    </section>
+
+    {% endblock %}
   </main>
 
+  <!-- Footer Section -->
   <footer class="bg-primary text-center text-light px-3 py-3">
+    {% block footer %}
     &copy; {{ now|date:"Y" }} Lab Dumps & Network Consultancy
+    {% endblock %}
   </footer>
 
+  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

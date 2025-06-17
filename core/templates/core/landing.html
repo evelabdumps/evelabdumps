@@ -1,0 +1,59 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="landing-page">
+
+  <!-- Hero Section -->
+  <header class="hero bg-primary text-white text-center py-5">
+    <div class="container">
+      <h1 class="display-4">Welcome to Lab Dumps & Network Consultancy</h1>
+      <p class="lead mt-3">
+        Your one-stop solution for lab dumps and network consultancy services.
+      </p>
+      <a href="{% url 'login' %}" class="btn btn-light btn-lg mt-4">Login</a>
+    </div>
+  </header>
+
+  <!-- Features Section -->
+  <section class="features py-5">
+    <div class="container">
+      <h2 class="text-center mb-5">What We Offer</h2>
+      <div class="row">
+        <div class="col-md-4 text-center">
+          <div class="feature-card p-4 border rounded shadow-sm">
+            <i class="bi bi-cloud-download display-4 text-primary"></i>
+            <h3 class="mt-3">Download Labs</h3>
+            <p>Access expertly curated labs for your EVE-Ng platform directly from our repository.</p>
+            <a href="{% url 'lab_list' %}" class="btn btn-outline-primary">Explore Labs</a>
+          </div>
+        </div>
+        <div class="col-md-4 text-center">
+          <div class="feature-card p-4 border rounded shadow-sm">
+            <i class="bi bi-bug display-4 text-danger"></i>
+            <h3 class="mt-3">Report Issues</h3>
+            <p>Submit network issues and let our experts help you troubleshoot effectively.</p>
+            <a href="{% url 'submit_issue' %}" class="btn btn-outline-danger">Report Now</a>
+          </div>
+        </div>
+        <div class="col-md-4 text-center">
+          <div class="feature-card p-4 border rounded shadow-sm">
+            <i class="bi bi-person-video3 display-4 text-success"></i>
+            <h3 class="mt-3">Request Consultancy</h3>
+            <p>Get one-on-one guidance from network experts for your critical tasks.</p>
+            <a href="{% url 'consultancy_request' %}" class="btn btn-outline-success">Request Consultancy</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action Section -->
+  <section class="cta py-5 text-center bg-primary text-white">
+    <div class="container">
+      <h2 class="display-5">Ready to Elevate Your Networking Game?</h2>
+      <a href="{% url 'login' %}" class="btn btn-light btn-lg mt-3">Login</a>
+    </div>
+  </section>
+
+</div>
+{% endblock %}

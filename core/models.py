@@ -1,5 +1,22 @@
 from django.db import models
 from django.contrib.auth.models import User
+import os
+
+class LabImage(models.Model):
+    category = models.CharField(max_length=100)
+    file = models.FileField(upload_to='lab_images/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.category} - {self.file.name}"
+
+    def delete(self, *args, **kwargs):
+        # Delete the file from storage
+        if self.file and os.path.isfile(self.file.path):
+            os.remove(self.file.path)
+        # Call the parent class delete method
+        super().delete(*args, **kwargs)
 
 class EveLabFile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="labs")

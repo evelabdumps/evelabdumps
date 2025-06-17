@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="container my-5">
+  <div class="card shadow" style="max-width: 600px; margin: 0 auto; border-radius: 10px; overflow: hidden;">
+    <div class="card-header bg-primary text-white text-center">
+      <h3>Upload Lab Image</h3>
+    </div>
+    <div class="card-body">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="id_category" class="form-label">Description</label>
+          {{ form.category }}
+        </div>
+        <div class="mb-3">
+          <label for="id_file" class="form-label">Select File</label>
+          {{ form.file }}
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Upload</button>
+      </form>
+    </div>
+    <div class="card-footer text-center">
+      <small class="text-muted">Supported formats: JPG, PNG, GIF, PDF, DOCX, etc.</small>
+    </div>
+  </div>
+</div>
+{% endblock %}

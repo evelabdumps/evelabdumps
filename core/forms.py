@@ -1,5 +1,20 @@
 from django import forms
-from .models import EveLabFile, NetworkIssue, ConsultancyRequest
+from .models import EveLabFile, NetworkIssue, ConsultancyRequest, LabImage
+
+
+MAX_UPLOAD_SIZE = 20 * 1024 * 1024  # 20MB
+
+
+
+class LabImageForm(forms.ModelForm):
+    class Meta:
+        model = LabImage
+        fields = ['category', 'file']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['category'].widget.attrs.update({'class': 'form-control'})
+        self.fields['file'].widget.attrs.update({'class': 'form-control'})
 
 class EveLabFileForm(forms.ModelForm):
     class Meta:

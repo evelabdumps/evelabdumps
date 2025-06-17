@@ -1,0 +1,31 @@
+{% extends 'core/base.html' %}
+{% load custom_filters %}
+
+{% block content %}
+<div class="container my-5">
+  <h2>Uploaded Files</h2>
+  {% for category, images in image_categories.items %}
+  <h4>{{ category }}</h4>
+  <div class="row">
+    {% for image in images %}
+    <div class="col-md-4 mb-4">
+      <div class="card shadow">
+        {% if image.is_image %}
+        <img src="{{ image.file.url }}" class="card-img-top" alt="Image Preview">
+        {% else %}
+        <div class="card-body text-center">
+            <p class="card-text">File: {{ image.file.name|basename }}</p>
+        </div>
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">{{ image.category }}</h5>
+          <p class="card-text"><small>Uploaded on: {{ image.uploaded_at|date:"M d, Y H:i" }}</small></p>
+          <a href="{{ image.file.url }}" target="_blank" class="btn btn-primary btn-sm">Download</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
