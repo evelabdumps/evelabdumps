@@ -3,29 +3,47 @@
 
 {% block content %}
 <div class="container my-5">
-  <h2>Uploaded Files</h2>
-  {% for category, images in image_categories.items %}
-  <h4>{{ category }}</h4>
-  <div class="row">
-    {% for image in images %}
-    <div class="col-md-4 mb-4">
-      <div class="card shadow">
-        {% if image.is_image %}
-        <img src="{{ image.file.url }}" class="card-img-top" alt="Image Preview">
-        {% else %}
-        <div class="card-body text-center">
-            <p class="card-text">File: {{ image.file.name|basename }}</p>
+  <div class="card shadow-lg" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 15px; padding: 30px;">
+    <h2 class="text-center text-primary mb-4">Lab Images Repository</h2>
+    <p class="text-center text-muted">
+      Welcome to the Lab Images Repository! This section provides a collection of pre-configured images for network simulation tools, allowing you to easily set up your own labs. Whether you're preparing for certifications, testing configurations, or experimenting with new designs, these images are here to help.
+    </p>
+
+    {% for category, images in image_categories.items %}
+    <div class="mt-5">
+      
+      <div class="row">
+        {% for image in images %}
+        <div class="col-md-4 mb-4">
+          <div class="card shadow">
+            {% if image.is_image %}
+            <img src="{{ image.file.url }}" class="card-img-top" alt="Image Preview" style="height: 200px; object-fit: cover;">
+            {% else %}
+            <div class="card-body text-center">
+              <p class="card-text">File: {{ image.file.name|basename }}</p>
+            </div>
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title">{{ image.category }}</h5>
+              <p class="card-text"><small>Uploaded on: {{ image.uploaded_at|date:"M d, Y H:i" }}</small></p>
+              <a href="{{ image.file.url }}" target="_blank" class="btn btn-primary btn-sm">Download</a>
+            </div>
+          </div>
         </div>
-        {% endif %}
-        <div class="card-body">
-          <h5 class="card-title">{{ image.category }}</h5>
-          <p class="card-text"><small>Uploaded on: {{ image.uploaded_at|date:"M d, Y H:i" }}</small></p>
-          <a href="{{ image.file.url }}" target="_blank" class="btn btn-primary btn-sm">Download</a>
-        </div>
+        {% endfor %}
       </div>
     </div>
     {% endfor %}
+
+    {% if not image_categories %}
+    <p class="text-muted text-center mt-3">No images available at the moment. Check back soon for new uploads!</p>
+    {% endif %}
+
+    {% if user.is_superuser %}
+    <div class="text-center mt-4">
+      <a href="{% url 'upload_lab_image' %}" class="btn btn-primary">Upload New Lab Image</a>
+    </div>
+    {% endif %}
   </div>
-  {% endfor %}
 </div>
 {% endblock %}

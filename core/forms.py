@@ -2,7 +2,7 @@ from django import forms
 from .models import EveLabFile, NetworkIssue, ConsultancyRequest, LabImage
 
 
-MAX_UPLOAD_SIZE = 20 * 1024 * 1024  # 20MB
+MAX_UPLOAD_SIZE = 50 * 1024 * 1024  # 20MB
 
 
 
@@ -24,10 +24,12 @@ class EveLabFileForm(forms.ModelForm):
 class EveLabFileForm(forms.ModelForm):
     class Meta:
         model = EveLabFile
-        fields = ['file']
+        fields = ['file', 'lab_type']
         widgets = {
             'file': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'lab_type': forms.Select(attrs={'class': 'form-select'}),
         }
+
 
 class NetworkIssueForm(forms.ModelForm):
     class Meta:

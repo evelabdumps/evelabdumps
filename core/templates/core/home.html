@@ -4,12 +4,40 @@
 <div class="container my-5">
   <div class="card shadow" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 15px; padding: 20px; max-width: 800px; margin: 0 auto;">
     <div class="text-center">
-      <h1 class="mb-4">Welcome to the EVE-Ng Lab & Consultancy Platform</h1>
-      <p class="lead mb-4">
-        Download lab files, report your network issues, and get expert consultancy with seamless payment.
+      <h1 class="mb-4 text-primary">Welcome to the EVE-NG Lab & Consultancy Platform</h1>
+      <p class="lead mb-4 text-secondary">
+        Download lab files, report network issues, and receive expert consultancy with seamless payment options.
       </p>
 
-      <a href="{% url 'consultancy_request' %}" class="btn btn-outline-primary mb-4">Request Consultancy</a>
+      <div class="card shadow-sm mb-4" style="border-radius: 10px; padding: 15px; background-color: rgba(245, 245, 245, 0.9);">
+        <p class="text-muted">
+          Get expert help for network design, consultancy, or a quick health check to ensure smooth operations.
+        </p>
+        <a href="{% url 'consultancy_request' %}" class="btn btn-outline-primary">Request Consultancy</a>
+      </div>
 
+      <div class="card shadow-sm mb-4" style="border-radius: 10px; padding: 15px; background-color: rgba(245, 245, 245, 0.9);">
+        <p class="text-muted">
+          Access a variety of images to build and customize your own lab environments.
+        </p>
+        <a href="{% url 'image_gallery' %}" class="btn btn-outline-primary">Download Images for Your Lab</a>
+      </div>
+
+      <div class="card shadow-sm mb-4" style="border-radius: 10px; padding: 15px; background-color: rgba(245, 245, 245, 0.9);">
+        <p class="text-muted">
+          Browse and download pre-designed labs to accelerate your learning or testing workflows.
+        </p>
+        <a href="{% url 'labs_view' %}" class="btn btn-outline-primary">Explore Labs</a>
+      </div>
+
+      <div class="card shadow-sm mb-4" style="border-radius: 10px; padding: 15px; background-color: rgba(245, 245, 245, 0.9);">
+        <p class="text-muted">
+          Report your network challenges and let our experts assist you in finding quick solutions.
+        </p>
+        <a href="{% url 'submit_issue' %}" class="btn btn-outline-primary">Raise a Network Issue</a>
+      </div>
+
+    </div>
+  </div>
 </div>
 {% endblock %}

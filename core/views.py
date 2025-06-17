@@ -210,4 +210,13 @@ def register(request):
 def labs_view(request):
     admins = User.objects.filter(is_superuser=True)
     labs = EveLabFile.objects.filter(user__in=admins).order_by('-uploaded_at')
-    return render(request, 'core/labs_view.html', {'labs': labs})
+
+    # Group labs by type
+    lab_categories = {
+        'EVE Labs': labs.filter(lab_type='EVE'),
+        'CML Labs': labs.filter(lab_type='CML'),
+        'Packet Tracer Labs': labs.filter(lab_type='PT'),
+    }
+
+    return render(request, 'core/labs_view.html', {'lab_categories': lab_categories})
+

@@ -1,23 +1,30 @@
 {% extends 'core/base.html' %}
 
 {% load custom_filters %}
-
 {% block content %}
 <div class="container my-5">
   <div class="card shadow-lg" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 15px; padding: 30px;">
-    <h2 class="text-center text-primary mb-4">Available Lab Files</h2>
+    <h2 class="text-center text-primary mb-4">Lab Repository</h2>
+    <p class="text-center text-muted">
+      Welcome to the Lab Repository! This page serves as a centralized hub for accessing and downloading a variety of lab files curated to help you excel in network simulations and learning. Explore and download pre-configured lab files for various network simulation tools. Learn, experiment, and grow your networking skills.
+    </p>
 
-    {% if labs %}
-    <ul class="list-group">
-      {% for lab in labs %}
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        <a href="{{ lab.file.url }}" target="_blank" class="fw-bold">{{ lab.file.name|basename }}</a>
-        <span class="text-muted small">{{ lab.uploaded_at|date:"M d, Y H:i" }}</span>
-      </li>
+    {% if lab_categories %}
+      {% for category, labs in lab_categories.items %}
+      <div class="mt-5">
+        <h3 class="text-secondary">{{ category }}</h3>
+        <ul class="list-group">
+          {% for lab in labs %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <a href="{{ lab.file.url }}" target="_blank" class="fw-bold">{{ lab.file.name|basename }}</a>
+            <span class="text-muted small">{{ lab.uploaded_at|date:"M d, Y H:i" }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
       {% endfor %}
-    </ul>
     {% else %}
-    <p class="text-muted text-center mt-3">No lab files available at the moment.</p>
+    <p class="text-muted text-center mt-3">No lab files are available at the moment. Check back later for updates!</p>
     {% endif %}
 
     {% if user.is_superuser %}

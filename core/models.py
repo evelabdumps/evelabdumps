@@ -19,12 +19,20 @@ class LabImage(models.Model):
         super().delete(*args, **kwargs)
 
 class EveLabFile(models.Model):
+    LAB_TYPE_CHOICES = [
+        ('EVE', 'EVE Lab'),
+        ('CML', 'CML Lab'),
+        ('PT', 'Packet Tracer Lab'),
+    ]
+
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="labs")
     file = models.FileField(upload_to='eve_labs/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
+    lab_type = models.CharField(max_length=3, choices=LAB_TYPE_CHOICES, default='EVE')
 
     def __str__(self):
-        return self.file.name
+        return f"{self.get_lab_type_display()} - {self.file.name}"
+
 
 class NetworkIssue(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='issues')
